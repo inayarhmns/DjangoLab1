@@ -16,7 +16,8 @@ def show_wishlist(request):
     data_barang_wishlist = BarangWishlist.objects.all()
     context = {
     'list_barang': data_barang_wishlist,
-    'nama': 'Inaya',
+    'nama': "Inaya",
+    'username' : request.COOKIES['user_name'] ,
     'last_login': request.COOKIES['last_login'],
 }
     return render(request, "wishlist.html", context)
@@ -51,14 +52,18 @@ def register(request):
     return render(request, 'register.html', context)
 
 def login_user(request):
+    context = {}
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        user_name = request.POST['username']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user) # melakukan login terlebih dahulu
             response = HttpResponseRedirect(reverse("wishlist:show_wishlist")) # membuat response
             response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
+            response.set_cookie('user_name', user_name)
+            # context = {'username' : username}
             return response
         else:
             messages.info(request, 'Username atau Password salah!')

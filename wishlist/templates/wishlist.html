@@ -1,25 +1,53 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h5>Nama: </h5>
-<p>{{nama}}</p>
+<nav class="navbar" style= "background-color: #e4a838;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Wishlist</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'wishlist:login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'wishlist:logout' %}">Logout</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+</nav>
 
-<table>
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
-    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}{% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+
+<h5 class="fw-bold">Nama: {{username}}</h5>
+
+
+<table class="table" style = "text-align: center;" >
+    <thead style = "background-color:darkorange;">
+      <tr>
+        <th style = "padding: 20px;" scope="col">Nama Barang</th>
+        <th style = "padding: 20px;" scope="col">Harga Barang</th>
+        <th style = "padding: 20px;" scope="col">Deskripsi</th>
+      </tr>
+    </thead>
+    <tbody>
     {% for barang in list_barang %}
-        <tr>
-            <th>{{barang.nama_barang}}</th>
-            <th>{{barang.harga_barang}}</th>
-            <th>{{barang.deskripsi}}</th>
+        <tr style = "background-color:bisque">
+            <td>{{barang.nama_barang}}</td>
+            <td>{{barang.harga_barang}}</td>
+            <td>{{barang.deskripsi}}</td>
         </tr>
     {% endfor %}
-
+    </tbody>
 </table>
+
+<p>
+</p>
 <h5>Sesi terakhir login: {{ last_login }}</h5>
 <button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
 
