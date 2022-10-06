@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+    </script>
+    <script>
+      $(document).ready(function(){
+        $("button").click(function(){
+          $.get("" , function(data, status){
+            alert("Data: " + data + "\nStatus: " + status);
+          });
+          });
+      });
+    </script>
+  </head>
+  <form id = "form" onsubmit="return false">
+    {% csrf_token %}
+    <label for="namaBarang">Nama Barang</label>
+    <input type="text" id="=namaBarang" name="Nama Barang">
+    <label for="hargaBarang">Harga Barang</label> 
+    <input type="text" id="=hargaBarang" name="Harga Barang">
+    <label for="deskripsiBarang">Deskripsi Barang</label> 
+    <input type="text" id="=deskripsiBarang" name="Deskripsi Barang">
+    <input type="submit" name="submit" value="Save" id="button" >
+
+  </form>
+  <script>
+   
+    
+    async function getWishlist() {
+      return fetch("{% url 'wishlist:json/' %}").then((res) => res.json());
+    }
+    async function getText(file) {
+    let myObject = await fetch(file);
+    let myText = await myObject.text();
+    myDisplay(myText);
+    }
+    function addWishlist()  {
+      fetch("{% url 'add_wishlist_item' %}")
+    }
+
+
+
+    document.getElementById("button").onclick = addWishlist
+  
+  </script>
+    <body>
+      <nav class="navbar" style= "background-color: #e4a838;">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">Wishlist</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'wishlist:login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{% url 'wishlist:logout' %}">Logout</a>
+                </li>
+              </ul>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+      </nav>
+
+
+      <h5 class="fw-bold">Nama: {{username}}</h5>
+
+
+      <table class="table" style = "text-align: center;" >
+          <thead style = "background-color:darkorange;">
+            <tr>
+              <th style = "padding: 20px;" scope="col">Nama Barang</th>
+              <th style = "padding: 20px;" scope="col">Harga Barang</th>
+              <th style = "padding: 20px;" scope="col">Deskripsi</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for barang in list_barang %}
+              <tr style = "background-color:bisque">
+                  <td>{{barang.nama_barang}}</td>
+                  <td>{{barang.harga_barang}}</td>
+                  <td>{{barang.deskripsi}}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+      <p>
+      </p>
+      <h5>Sesi terakhir login: {{ last_login }}</h5>
+      <button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+
+      {% endblock content %}
+  </body>
+
+    
+</html>

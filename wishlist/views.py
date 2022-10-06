@@ -38,6 +38,17 @@ def show_xml_by_id(request, id):
     data = BarangWishlist.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
+def show_ajax(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+    'list_barang': data_barang_wishlist,
+    'nama': "Inaya",
+    'username' : request.COOKIES['user_name'] ,
+    'last_login': request.COOKIES['last_login'],
+}
+    return render(request, "wishlist_ajax.html", context)
+
+
 def register(request):
     form = UserCreationForm()
 
